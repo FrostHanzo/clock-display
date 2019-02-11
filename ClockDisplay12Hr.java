@@ -12,20 +12,22 @@
  * @author Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
-public class ClockDisplay
+public class ClockDisplay12Hr
 {
     private NumberDisplay hours;
     private NumberDisplay minutes;
+    private String DayorNight;
     private String displayString;    // simulates the actual display
     
     /**
      * Constructor for ClockDisplay objects. This constructor 
      * creates a new clock set at 00:00.
      */
-    public ClockDisplay()
+    public ClockDisplay12Hr()
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
+        DayorNight = "AM";
         updateDisplay();
     }
 
@@ -34,11 +36,12 @@ public class ClockDisplay
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay(int hour, int minute)
+    public ClockDisplay12Hr(int hour, int minute, String AMorPM)
     {
-        hours = new NumberDisplay(24);
+        hours = new NumberDisplay(13);
         minutes = new NumberDisplay(60);
-        setTime(hour, minute);
+        DayorNight = AMorPM ;
+        setTime(hour, minute, AMorPM);
     }
 
     /**
@@ -58,10 +61,11 @@ public class ClockDisplay
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute)
+    public void setTime(int hour, int minute, String AMorPM)
     {
         hours.setValue(hour);
         minutes.setValue(minute);
+        DayorNight = AMorPM;
         updateDisplay();
     }
 
