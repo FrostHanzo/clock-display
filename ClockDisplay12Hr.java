@@ -16,7 +16,7 @@ public class ClockDisplay12Hr
 {
     private NumberDisplay hours;
     private NumberDisplay minutes;
-    private String DayorNight;
+    private boolean isMorning;
     private String displayString;    // simulates the actual display
     
     /**
@@ -27,7 +27,7 @@ public class ClockDisplay12Hr
     {
         hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
-        DayorNight = "AM";
+        isMorning = true;
         updateDisplay();
     }
 
@@ -36,12 +36,12 @@ public class ClockDisplay12Hr
      * creates a new clock set at the time specified by the 
      * parameters.
      */
-    public ClockDisplay12Hr(int hour, int minute, String AMorPM)
+    public ClockDisplay12Hr(int hour, int minute,boolean isMorning)
     {
-        hours = new NumberDisplay(13);
+        hours = new NumberDisplay(12);
         minutes = new NumberDisplay(60);
-        DayorNight = AMorPM ;
-        setTime(hour, minute, AMorPM);
+        this.isMorning = isMorning;
+        setTime(hour, minute, isMorning);
     }
 
     /**
@@ -53,6 +53,13 @@ public class ClockDisplay12Hr
         minutes.increment();
         if(minutes.getValue() == 0) {  // it just rolled over!
             hours.increment();
+            if(hours.getValue() == 0){
+                if(isMorning== true){
+                    isMorning = false;
+                }else {
+                    isMorning = true;
+                }
+            }
         }
         updateDisplay();
     }
@@ -61,11 +68,11 @@ public class ClockDisplay12Hr
      * Set the time of the display to the specified hour and
      * minute.
      */
-    public void setTime(int hour, int minute, String AMorPM)
+    public void setTime(int hour, int minute, boolean isMorning)
     {
         hours.setValue(hour);
         minutes.setValue(minute);
-        DayorNight = AMorPM;
+        this.isMorning = isMorning;
         updateDisplay();
     }
 
@@ -82,7 +89,21 @@ public class ClockDisplay12Hr
      */
     private void updateDisplay()
     {
-        displayString = hours.getDisplayValue() + ":" + 
-                        minutes.getDisplayValue();
-    }
+        /**displayString = hours.getDisplayValue() + ":" + 
+           *             minutes.getDisplayValue();
+    */
+    displayString = "";
+          String suffix = "Am";
+          if (!isMorning) {
+              suffix = "Pm";
+            }
+            
+            String newHours;
+            if (hours.getValue() ==0){
+                newHours ="12";
+            }else {
+                newHours = hours.getDisplayValue();
+            }
+            displayString = newHours + ":" + minutes.getDisplayValue() + " " + suffix;
+}
 }
